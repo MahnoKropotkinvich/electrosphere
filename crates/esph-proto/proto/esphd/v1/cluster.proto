@@ -1,0 +1,72 @@
+syntax = "proto3";
+package esphd.v1;
+
+/// Service for inter-daemon communication (worker ↔ master).
+service EsphCluster {
+  /// Worker sends heartbeat to master.
+  rpc Heartbeat (HeartbeatRequest) returns (HeartbeatResponse);
+
+  /// Worker registers itself with the master.
+  rpc RegisterNode (RegisterNodeRequest) returns (RegisterNodeResponse);
+
+  /// Query all nodes (master responds).
+  rpc ListNodes (ListNodesRequest) returns (ListNodesResponse);
+}
+
+// --- Heartbeat ---
+
+message HeartbeatRequest {
+  string node_id = 1;
+  string role = 2;
+  string arch = 3;
+  string os = 4;
+  repeated string tags = 5;
+  ResourceInfo resources = 6;
+}
+
+message ResourceInfo {
+  double cpu_usage_percent = 1;
+  uint64 memory_used_bytes = 2;
+  uint64 memory_total_bytes = 3;
+  uint64 disk_used_bytes = 4;
+  uint64 disk_total_bytes = 5;
+}
+
+message HeartbeatResponse {
+  bool accepted = 1;
+}
+
+// --- Register ---
+
+message RegisterNodeRequest {
+  string node_id = 1;
+  string name = 2;
+  string role = 3;
+  string arch = 4;
+  string os = 5;
+  repeated string tags = 6;
+}
+
+message RegisterNodeResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// --- List ---
+
+message ListNodesRequest {}
+
+message ListNodesResponse {
+  repeated NodeInfo nodes = 1;
+}
+
+message NodeInfo {
+  string node_id = 1;
+  string name = 2;
+  string role = 3;
+  string arch = 4;
+  string os = 5;
+  repeated string tags = 6;
+  bool online = 7;
+  string last_seen = 8;
+}

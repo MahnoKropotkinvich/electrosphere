@@ -1,0 +1,98 @@
+syntax = "proto3";
+package esphd.v1;
+
+/// Service exposed by esphd to esphctl via Unix domain socket.
+service EsphDaemon {
+  // Lifecycle
+  rpc Shutdown (ShutdownRequest) returns (ShutdownResponse);
+
+  // Queries
+  rpc GetStatus (GetStatusRequest) returns (GetStatusResponse);
+  rpc GetClusterNodes (GetClusterNodesRequest) returns (GetClusterNodesResponse);
+
+  // Filesystem
+  rpc Mount (MountRequest) returns (MountResponse);
+  rpc Unmount (UnmountRequest) returns (UnmountResponse);
+
+  // Token management (master only)
+  rpc CreateJoinToken (CreateJoinTokenRequest) returns (CreateJoinTokenResponse);
+}
+
+// --- Lifecycle ---
+
+message ShutdownRequest {}
+
+message ShutdownResponse {
+  bool success = 1;
+}
+
+// --- Status ---
+
+message GetStatusRequest {}
+
+message GetStatusResponse {
+  string node_id = 1;
+  string role = 2;
+  string cluster_name = 3;
+  bool daemon_running = 4;
+  bool network_connected = 5;
+  bool fs_mounted = 6;
+  string fs_mount_point = 7;
+  ResourceUsage resources = 8;
+}
+
+message ResourceUsage {
+  double cpu_usage_percent = 1;
+  uint64 memory_used_bytes = 2;
+  uint64 memory_total_bytes = 3;
+  uint64 disk_used_bytes = 4;
+  uint64 disk_total_bytes = 5;
+}
+
+// --- Cluster Nodes (ps) ---
+
+message GetClusterNodesRequest {}
+
+message GetClusterNodesResponse {
+  repeated ClusterNode nodes = 1;
+}
+
+message ClusterNode {
+  string node_id = 1;
+  string name = 2;
+  string role = 3;
+  string arch = 4;
+  string os = 5;
+  repeated string tags = 6;
+  bool online = 7;
+  string last_seen = 8;
+}
+
+// --- Filesystem ---
+
+message MountRequest {
+  string mount_point = 1;
+}
+
+message MountResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message UnmountRequest {
+  string mount_point = 1;
+}
+
+message UnmountResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// --- Token ---
+
+message CreateJoinTokenRequest {}
+
+message CreateJoinTokenResponse {
+  string token = 1;
+  string join_command = 2;
+}

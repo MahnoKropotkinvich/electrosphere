@@ -1,0 +1,24 @@
+# Build artifacts
+/target/
+crates/*/target/
+
+# Dependencies
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+
+# RocksDB test data
+*.db/

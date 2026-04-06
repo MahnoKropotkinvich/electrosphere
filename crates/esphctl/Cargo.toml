@@ -1,0 +1,20 @@
+[package]
+name = "esphctl"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "esphctl"
+path = "src/main.rs"
+
+[dependencies]
+esph-core = { workspace = true }
+esph-proto = { workspace = true }
+tokio = { workspace = true }
+tonic = { workspace = true }
+clap = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+nix = { workspace = true }

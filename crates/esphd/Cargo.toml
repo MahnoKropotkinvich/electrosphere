@@ -1,0 +1,24 @@
+[package]
+name = "esphd"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "esphd"
+path = "src/main.rs"
+
+[dependencies]
+esph-core = { workspace = true }
+esph-proto = { workspace = true }
+esph-etc = { workspace = true }
+esph-fs = { workspace = true }
+tokio = { workspace = true }
+tonic = { workspace = true }
+prost = { workspace = true }
+tower = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+nix = { workspace = true }
+sysinfo = { workspace = true }
